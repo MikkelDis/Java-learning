@@ -1,7 +1,5 @@
-package com.mikkel.postgresExample.dao;
+package com.mikkel.postgresExample.dao.impl;
 
-import com.mikkel.postgresExample.dao.impl.BookDao;
-import com.mikkel.postgresExample.domain.Author;
 import com.mikkel.postgresExample.domain.Book;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -34,6 +33,16 @@ public class BookDaoTests {
         verify(jdbcTemplate).update(
                 eq("INSERT INTO books (isbn, title, author_id) VALUES (?,?,?)"),
                 eq("999-1-2222-3333-0"), eq("The Shadow"), eq(1L)
+        );
+    }
+
+    @Test
+    public void testThatFindOneGeneratesCorrectSQL(){
+        bookDao.findOne("999-1-2222-3333-0");
+        verify(jdbcTemplate).query(
+                eq("SELECT isbn, title, author_id FROM books WHERE isbn = ? LIMIT 1"),
+                any(BookDao.BookRowMapper.class),
+                eq("999-1-2222-3333-0")
         );
     }
 
