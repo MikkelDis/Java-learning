@@ -1,5 +1,6 @@
 package com.mikkel.postgresExample.dao.impl;
 
+import com.mikkel.postgresExample.TestDataUtil;
 import com.mikkel.postgresExample.domain.Book;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,11 +24,7 @@ public class BookDaoTests {
 
     @Test
     public void testThatCreateBookGeneratesCorrectSQL(){
-        Book book = Book.builder()
-                .isbn("999-1-2222-3333-0")
-                .title("The Shadow")
-                .author_id(1L)
-                .build();
+        Book book = TestDataUtil.createTestBook();
 
         bookDao.create(book);
         verify(jdbcTemplate).update(

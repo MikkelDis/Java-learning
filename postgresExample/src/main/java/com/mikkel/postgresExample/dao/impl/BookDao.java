@@ -5,6 +5,7 @@ import com.mikkel.postgresExample.domain.Author;
 import com.mikkel.postgresExample.domain.Book;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.OAEPParameterSpec;
 import java.sql.ResultSet;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class BookDao implements IBookDao {
 
     private final JdbcTemplate jdbcTemplate;

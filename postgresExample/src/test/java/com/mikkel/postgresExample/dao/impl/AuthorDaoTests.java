@@ -1,14 +1,13 @@
 package com.mikkel.postgresExample.dao.impl;
 
+import com.mikkel.postgresExample.TestDataUtil;
 import com.mikkel.postgresExample.domain.Author;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -25,11 +24,7 @@ public class AuthorDaoTests {
 
     @Test
     public void testThatCreateAuthorGeneratesCorrectSQL(){
-        Author author = Author.builder()
-                .id(1L)
-                .name("Abigail Rose")
-                .age(80)
-                .build();
+        Author author = TestDataUtil.createTestAuthor();
         underTest.create(author);
         verify(jdbcTemplate).update(
                 eq("INSERT INTO authors (id, name, age) VALUES(?,?,?)"),
