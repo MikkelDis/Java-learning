@@ -24,7 +24,7 @@ public class AuthorDaoTests {
 
     @Test
     public void testThatCreateAuthorGeneratesCorrectSQL(){
-        Author author = TestDataUtil.createTestAuthor();
+        Author author = TestDataUtil.createTestAuthorA();
         underTest.create(author);
         verify(jdbcTemplate).update(
                 eq("INSERT INTO authors (id, name, age) VALUES(?,?,?)"),
@@ -42,4 +42,29 @@ public class AuthorDaoTests {
         );
     }
 
+    @Test
+    public void testThatFindManyGeneratesTheCorrectSQL(){
+        underTest.find();
+        verify(jdbcTemplate).query(
+                eq("SELECT id, name, age FROM authors"),
+                any(AuthorDao.AuthorRowMapper.class));
+    }
+
+    @Test
+    public void testThatUpdateGeneratesTheCorrectSQL(){
+        underTest.update(TestDataUtil.createTestAuthorA().getId(), TestDataUtil.createTestAuthorA());
+        verify(jdbcTemplate).update(
+                eq("UPDATE authors SET id=?, name=?, age=? WHERE id = ?"),
+                eq(1L), eq("Abigail Rose"), eq(80), eq(1L)
+        );
+    }
+
+    @Test
+    public void testThatDeleteGeneratesTheCorrectSQL(){
+        underTest.delete(1L);
+        verify(jdbcTemplate).update(
+                eq("DELETE FROM authors WHERE id = ?"),
+                eq(1L)
+        );
+    }
 }

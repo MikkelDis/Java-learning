@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.OAEPParameterSpec;
+import javax.swing.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -49,4 +50,22 @@ public class BookDao implements IBookDao {
                     .build();
         }
     }
+
+    @Override
+    public List<Book> find(){
+        List<Book> books = jdbcTemplate.query("SELECT isbn, title, author_id FROM books", new BookDao.BookRowMapper());
+        return books;
+    }
+
+    @Override
+    public void update(String isbn, Book book){
+        jdbcTemplate.update("UPDATE books SET isbn=?, title=?, author_id=? WHERE isbn=?",
+                book.getIsbn(), book.getTitle(), book.getAuthor_id(), isbn);
+    }
+
+    @Override
+    public void delete(String isbn){
+        jdbcTemplate.update("DELETE FROM books WHERE isbn = ?", isbn);
+    }
+
 }
