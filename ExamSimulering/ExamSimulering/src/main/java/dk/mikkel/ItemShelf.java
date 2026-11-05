@@ -25,6 +25,7 @@ public class ItemShelf {
     public boolean addItem(Item item){
         if(capacity > item.getSize()){
             this.items.add(item);
+            this.capacity -= item.getSize();
             for(IObserver o : this.observers){
                 o.update("itemAdded");
             }
@@ -54,11 +55,25 @@ public class ItemShelf {
     }
 
     @Override
-    public String toString(){
-        String shelfString = "ITEM       CATEGORY       SIZE\n";
+    public String toString(){ //Undskyld til Danny hvis du skal læse det her. Det er virkelig spaghetti kode, men var bare en lille sjov feature
+        String shelfString = "----------------------------------\n";
+        int lineLen = 33;
+        int spacesAtEnd = lineLen - ("| SHELF OVERVIEW FOR " + this.name.toUpperCase()).length();
+        shelfString += "| SHELF OVERVIEW FOR " + this.name.toUpperCase()+ " ".repeat(spacesAtEnd) + "|\n";
+        shelfString += "----------------------------------\n";
+        shelfString += "| ITEM       CATEGORY       SIZE |\n";
         for(Item i : this.items){
-            shelfString += i.toString();
+            spacesAtEnd = lineLen - ("| " + i.toString()).length();
+            shelfString += "| " + i.toString() + " ".repeat(spacesAtEnd) + "|\n";
         }
+        shelfString += "----------------------------------\n";
+
+        spacesAtEnd = lineLen - ("| TOTAL CAPACITY / CAPACITY").length();
+        shelfString += "| TOTAL CAPACITY / CAPACITY" + " ".repeat(spacesAtEnd)+"|\n";
+
+        spacesAtEnd = lineLen - ("| " + this.totalCapacity + " / " + this.capacity).length();
+        shelfString += "| " + this.totalCapacity + " / " + this.capacity + " ".repeat(spacesAtEnd) + "|\n";
+        shelfString += "----------------------------------\n";
         return shelfString;
     }
 

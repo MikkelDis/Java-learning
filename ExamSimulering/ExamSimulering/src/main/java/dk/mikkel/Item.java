@@ -8,7 +8,7 @@ public class Item {
     private String name;
     private double size;
 
-    //For printing
+    //For at kunne udsrive teksten flot
     private int gapLen = 7;
     private int ItemLen = "ITEM".length();
     private int CategoryLen = "CATEGORY".length();
@@ -22,10 +22,10 @@ public class Item {
 
 
     @Override
-    public String toString(){
+    public String toString(){ //Undskuld at den nok er lidt grim, men det bare for at formatere teksten flot
         return this.name + " ".repeat(ItemLen + gapLen - this.name.length())
                 + this.category.toString() + " ".repeat(CategoryLen + gapLen - this.category.toString().length())
-                + this.size + "\n";
+                + this.size;
     }
 
     public ItemCategory getCategory() {
